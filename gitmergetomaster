@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+TAG=$1
+BRANCHNAME=$(git rev-parse --abbrev-ref HEAD)
+
+if [ -z "$TAG" ]
+then
+    echo "Usage: 'gitmergetomaster <tag>'. Example: 'gitmergetomaster 1.0.0'."
+    exit 1
+fi
+
+git merge master
+
+git checkout master
+git merge --squash $BRANCHNAME
+git commit
+git branch -D $BRANCHNAME
+
+git tag $1
+
+git push --tags
+git push origin master
