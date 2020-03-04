@@ -2,8 +2,14 @@
 
 set -e
 
-TAG=$1
+if ! type git > /dev/null
+then
+    echo "This tool requires Git to be installed."
+    exit 1
+fi
+
 BRANCHNAME=$(git rev-parse --abbrev-ref HEAD)
+TAG=$1
 
 if [ -z "$TAG" ]
 then
